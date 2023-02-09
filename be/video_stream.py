@@ -2,6 +2,10 @@ import cv2
 import tensorflow as tf
 import tensorflow_hub as hub
 import numpy as np
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def draw_keypoints(frame, keypoints, confidence_threshold):
     y, x, c = frame.shape
@@ -71,7 +75,8 @@ def loop_through_people(frame, keypoints_with_scores, boxes_with_scores, edges, 
 
 def get_stream_video():
     # Load model
-    model = hub.load('../../../../movenet_multipose_lightning_1')
+    model_directory = os.environ.get('MODEL_DIRECTORY')
+    model = hub.load(model_directory)
     movenet = model.signatures['serving_default']
 
     cap = cv2.VideoCapture(0)
